@@ -1,0 +1,17 @@
+{
+  "name": "clasecalculadora",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "clase2subirpaquetenpm": "^2.0.0",
+    "express": "^5.1.0"
+  }
+}
