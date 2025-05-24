@@ -6,6 +6,10 @@ import usersRouter from './routes/users.router.js';
 import petsRouter from './routes/pets.router.js';
 import adoptionsRouter from './routes/adoption.router.js';
 import sessionsRouter from './routes/sessions.router.js';
+import { faker } from '@faker-js/faker';
+import { logger } from './utils/logger.js';
+import cluster from "cluster"
+import { cpus } from 'os';
 
 configDotenv()
 
@@ -21,4 +25,25 @@ app.use('/api/pets',petsRouter);
 app.use('/api/adoptions',adoptionsRouter);
 app.use('/api/sessions',sessionsRouter);
 
-app.listen(PORT,()=>console.log(`Listening on ${PORT}`))
+app.get('/api/test/user', (req, res) => {
+    let first_name = faker.person.firstName();
+    let last_name = faker.person.lastName();
+    let email = faker.internet.email();
+    let password = faker.internet.password();
+    
+    res.send({ first_name, last_name, email, password });
+});
+
+if(cluster.isPrimary) {
+    for(let i = 0; i < cpus().length;i++){
+        cluster.fork()
+    }
+
+    cluster.on("exit",worker => {
+        logger.error("exit process: " + worker.process.pid + " " + new Date().toLocaleDateString())
+        cluster.fork()
+    })
+}
+if(cluster.isWorker) {
+    app.listen(PORT,()=>logger.info(`Process ${process.pid } Listening on ${PORT}`))
+}
