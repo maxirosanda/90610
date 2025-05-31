@@ -1,7 +1,7 @@
 import PetDTO from "../dto/Pet.dto.js";
 import { petsService } from "../services/index.js"
-import __dirname from "../utils/index.js";
-import { faker } from '@faker-js/faker';
+import __dirname, { createHash } from "../utils/index.js";
+import { fa, faker } from '@faker-js/faker';
 import { logger } from "../utils/logger.js";
 
 const getAllPets = async(req,res)=>{
@@ -67,6 +67,35 @@ const mockingpets = (req, res) => {
     }
 
     res.status(200).json({status:"success", payload:pets})
+
+}
+
+
+
+const generateData = (req,res) => {
+    const {u,p} = req.params
+    for(let i=0;i < Number(p);i++){
+        const pet ={
+            name: faker.animal.petName(),
+            specie:faker.animal.type(),
+            birthDate:faker.date.birthdate,
+            adopted:false,
+            owner:"",
+            image:faker.image.animal
+
+        }
+        // guardar en base de datos
+    }
+
+    for(let i=0;i < Number(u);i++){
+        const user ={
+            first_name: faker.person.firstName(),
+            password: createHash(faker.internet.password()) 
+
+        }
+        // guardar en base de datos
+    }
+
 
 }
 
