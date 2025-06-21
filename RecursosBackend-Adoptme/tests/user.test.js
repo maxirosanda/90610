@@ -1,12 +1,11 @@
 import Users from "../src/dao/Users.dao.js";
 import mongoose from "mongoose";
-import chai from 'chai'
+import { expect } from 'chai'
 import dotenv from 'dotenv'
 
 dotenv.config()
 mongoose.connect(process.env.MONGO_URI)
 
-const expect = chai.expect
 
 describe('Testing users dao', function(){
 
